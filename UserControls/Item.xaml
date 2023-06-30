@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="UiDesktopChatApp.UserControls.Item"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:UiDesktopChatApp.UserControls"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Name="item"
+    MouseLeftButtonDown="UserControl_MouseLeftButtonDown">
+    <UserControl.Resources>
+        <local:AbbreviationConverter x:Key="AbbreviationConverter" />
+        <Storyboard x:Key="BorderStyle1" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Border
+            x:Name="border"
+            Width="50"
+            Height=" 50"
+            CornerRadius="10">
+            <Border.Background>
+                <SolidColorBrush Opacity="0.2" Color="#FF898989" />
+            </Border.Background>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="{Binding Title, Converter={StaticResource AbbreviationConverter}}" />
+        </Border>
+        <TextBlock
+            Grid.Column="1"
+            Margin="20,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="{Binding Title}" />
+    </Grid>
+</UserControl>

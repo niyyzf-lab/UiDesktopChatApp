@@ -1,0 +1,132 @@
+﻿<ui:UiPage
+    x:Class="UiDesktopChatApp.Views.Pages.ChatPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:UiDesktopChatApp.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:UiDesktopChatApp.UserControls"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="DashboardPage"
+    d:Background="{DynamicResource ApplicationBackgroundBrush}"
+    d:DataContext="{d:DesignInstance local:ChatPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <!--  左侧列表  -->
+        <!--  标题头  -->
+        <DockPanel>
+            <ComboBox
+                Name="ChatSelect"
+                Margin="5,0,0,0"
+                SelectedIndex="0"
+                SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem Content="联系人" />
+                <ComboBoxItem Content="群组" />
+            </ComboBox>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Click="Button_Click" Content="筛选" />
+                <Button Content="编辑" />
+            </StackPanel>
+        </DockPanel>
+        <ui:TextBox Name="popName" Grid.Column="1" />
+        <ui:ToggleSwitch
+            Name="UserSwitch"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            IsChecked="True" />
+        <DockPanel Grid.Row="1">
+            <ListBox
+                x:Name="UserList"
+                ItemsSource="{Binding}"
+                SelectionChanged="UserList_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <uc:Item
+                            Title="{Binding Title}"
+                            MessageList="{Binding MessageList, Mode=TwoWay}"
+                            UserId="{Binding UserId}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+        <StackPanel
+            Grid.Column="1"
+            Margin="18,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center">
+            <TextBlock Name="UserName" FontSize="20" />
+        </StackPanel>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" MaxHeight="110" />
+            </Grid.RowDefinitions>
+            <ListBox
+                Name="ChatMessagePage"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}"
+                Style="{StaticResource CustomListBoxStyle}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <uc:MessageChat
+                            Title="{Binding Title}"
+                            Message="{Binding Message}"
+                            Tag="{Binding Uid}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" />
+                        <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMirrored}" Value="True">
+                                <Setter Property="FlowDirection" Value="RightToLeft" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBox
+                    Name="UserInput"
+                    MaxHeight="100"
+                    VerticalAlignment="Center"
+                    AcceptsReturn="True"
+                    Icon="Accessibility48"
+                    MaxLines="10"
+                    MinLines="1"
+                    PlaceholderText="请输入...."
+                    TextChanged="UserInput_TextChanged"
+                    TextWrapping="Wrap" />
+                <ui:Button
+                    Grid.Column="1"
+                    Height="{Binding ElementName=UserInput, Path=Height}"
+                    Margin="10,0,0,0"
+                    Padding="6"
+                    HorizontalAlignment="Right"
+                    Appearance="Secondary"
+                    Click="SendButton_Click"
+                    FontSize="20"
+                    Icon="Send24" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ui:UiPage>
